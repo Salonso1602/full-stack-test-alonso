@@ -1,4 +1,4 @@
-package com.api.main;
+package com.api.controllers;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,16 +29,29 @@ public class EmployeeController {
 		res.add(new Employee());
 		return res;
 	}
+	
 	@Operation(summary = "Obtener un empleado según su id")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Obtenido el Empleado", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = Employee.class)) }),
 			@ApiResponse(responseCode = "404", description = "No se encontró un empleado registrado con el Id dado", content = @Content)})
 	@GetMapping("/{id}")
-	public Employee getEmployee(@PathVariable String id) {
+	public Employee getEmployeeById(@PathVariable String id) {
 		Employee res = new Employee();
 		res.EmployeeId = id;
 		return res;
 	}
-
+	
+	@Operation(summary = "Obtener un empleado según la id de su manager")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Obtenido el Empleado", content = {
+					@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Employee.class))) }),
+			@ApiResponse(responseCode = "404", description = "No se encontró un managerId dado", content = @Content),
+			@ApiResponse(responseCode = "201", description = "Ese manager no tiene dependientes", content = @Content)})
+	@GetMapping("/managedBy/{id}")
+	public ArrayList<Employee> getEmployeeByManager(@PathVariable String id) {
+		ArrayList<Employee> res = new ArrayList<>();
+		res.add(new Employee());
+		return res;
+	}
 }
