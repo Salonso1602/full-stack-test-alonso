@@ -39,7 +39,6 @@ public class EmployeeController {
 	@GetMapping("/{id}")
 	public Employee getEmployeeById(@PathVariable String id) {
 		Employee res = new Employee();
-		res.EmployeeId = id;
 		return res;
 	}
 	
