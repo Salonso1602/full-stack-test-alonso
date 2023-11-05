@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -16,38 +17,52 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class xlsxImporter {
-    public static Map<Integer, List<String>> getData(String fileLocation) throws FileNotFoundException{
+    public static Map<Integer, Map<String,String>> getData(String fileLocation) throws FileNotFoundException{
         try{
             FileInputStream file = new FileInputStream(new File(fileLocation));
             Workbook workbook = new XSSFWorkbook(file);
             Sheet sheet = workbook.getSheetAt(0);
-            Map<Integer, List<String>> data = new HashMap<>();
+
+            //Creamos lista con claves para mapa de cada empleado
+            ArrayList<String> colNames = new ArrayList<String>();
+            for(Cell cell : sheet.getRow(1)){
+                colNames.add(cell.getRichStringCellValue().getString());
+            }
+
             int i = 0;
-            for (Row row : sheet) {
-                data.put(i, new ArrayList<String>());
+            Map<Integer, Map<String,String>> data = new HashMap<>();
+
+            //Se saltean primeras 2 filas ya que son headers
+            Iterator<Row> rowIterator = sheet.rowIterator();
+            rowIterator.next();
+            rowIterator.next();
+            while (rowIterator.hasNext()) {
+                Row row = rowIterator.next();
+                data.put(i, new HashMap<String,String>());
+                int j = 0;
                 for (Cell cell : row) {
                     switch (cell.getCellType()) {
-                        
                         case NUMERIC: 
                             if (DateUtil.isCellDateFormatted(cell)) {
-                                data.get(i).add(cell.getDateCellValue() + "");
+                                data.get(i).put(colNames.get(j), cell.getDateCellValue() + "");
                             } else {
-                                data.get(i).add(cell.getNumericCellValue() + "");
+                                data.get(i).put(colNames.get(j), cell.getNumericCellValue() + "");
                             }
                             break;
 
                         case BOOLEAN: 
-                            data.get(i).add(cell.getBooleanCellValue() + ""); 
+                            data.get(i).put(colNames.get(j), cell.getBooleanCellValue() + ""); 
                             break;
 
                         case FORMULA: 
-                            data.get(i).add(cell.getCellFormula() + "");
+                            data.get(i).put(colNames.get(j), cell.getCellFormula() + "");
                             break;
 
                         default:
-                            data.get(i).add(cell.getRichStringCellValue().getString());
+                            data.get(i).put(colNames.get(j), cell.getRichStringCellValue().getString());
                             break;
                     }
+                    j++;
                 }
                 i++;
             }
