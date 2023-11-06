@@ -2,7 +2,6 @@ package com.api.models;
 
 import java.util.Date;
 
-import io.micrometer.common.lang.NonNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
