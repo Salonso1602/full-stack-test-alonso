@@ -1,4 +1,5 @@
-FROM eclipse-temurin:17-jdk-alpine
+FROM eclipse-temurin:17-jdk
 VOLUME /tmp
-COPY build/libs/ConsultingAPI-0.0.1-SNAPSHOT.jar app.jar
+COPY ./api/build/libs/ConsultingAPI-0.0.1-SNAPSHOT.jar app.jar
+#COPY ./compose.yml /
 ENTRYPOINT ["java","-jar","/app.jar"]

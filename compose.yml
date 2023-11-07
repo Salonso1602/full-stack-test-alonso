@@ -19,14 +19,14 @@ services:
       MYSQL_ROOT_HOST: '%'
     labels:
       org.springframework.boot.service-connection: mysql
-      org.springframework.boot.readiness-check.tcp.disable: true
+      org.springframework.boot.readiness-check.tcp.disable: false
     networks:
       - mynetwork
 
   consulting-api:
     build: 
-      context: ./api
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: ./api/Dockerfile
     image: consulting-api
     ports:
       - 8080:8080
