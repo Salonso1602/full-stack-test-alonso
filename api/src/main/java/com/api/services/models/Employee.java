@@ -1,4 +1,4 @@
-package com.api.models;
+package com.api.services.models;
 
 import java.util.Date;
 
@@ -21,15 +21,15 @@ public class Employee {
     private String email;
     private String type;
     private String timeType;
-    private String jobProfileId;
+    private JobProfile jobProfile;
     private Date hireDate;
-    private String costCenterId;
+    private CostCenter costCenter;
 
 
-    public static Employee FromDTO(){
-        return new Employee();
-    }
-    public static Employee FromEntity(){
-        return new Employee();
+    public String getFullName(){
+        if(this.getMiddleName() != null){
+            return this.getFirstName() + " " + this.getMiddleName() + " " + this.getLastName();
+        }
+        return this.getFirstName() + " " + this.getLastName();
     }
 }
