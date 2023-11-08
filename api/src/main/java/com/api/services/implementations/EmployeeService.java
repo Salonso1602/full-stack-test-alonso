@@ -1,25 +1,33 @@
 package com.api.services.implementations;
 
-import java.util.ArrayList;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.api.models.Employee;
-import com.api.services.IEmployeeService;
+import com.api.helpers.IEntityMapper;
+import com.api.helpers.mappers.EmployeeMapper;
+import com.api.repository.IEmployeeRepository;
+import com.api.repository.entities.entityImplementations.EmployeeEntity;
+import com.api.services.interfaces.IEmployeeService;
+import com.api.services.models.Employee;
 
 @Service
 public class EmployeeService implements IEmployeeService {
 
+    @Autowired
+    private IEmployeeRepository repo;
+
+    private IEntityMapper<Employee, EmployeeEntity> mapper = new EmployeeMapper();
+
     @Override
-    public ArrayList<Employee> getAllEmployees() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllEmployees'");
+    public List<Employee> getAllEmployees() {
+        return mapper.mapObjects(repo.findAll());
     }
 
     @Override
     public Employee getEmployeeById(String Id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getEmployeeById'");
+        return mapper.mapObject(repo.findById(Id).get());
     }
 
     @Override
@@ -32,6 +40,16 @@ public class EmployeeService implements IEmployeeService {
     public Employee deleteEmployee(String employeeId) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteEmployee'");
+    }
+
+    @Override
+    public List<Employee> getEmployeesByManager(String managerId) {
+        return mapper.mapObjects(repo.findByManager(managerId).values());
+    }
+
+    @Override
+    public List<Employee> getEmployeesByMatrixManager(String matrixManagerId) {
+        return mapper.mapObjects(repo.findByMatrixManager(matrixManagerId).values());
     }
     
 }
