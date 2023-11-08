@@ -1,15 +1,22 @@
 package com.api.models.entities;
 
+import java.util.List;
 
-import java.util.Date;
+import com.api.models.entities.contractEntities.ContractEntity;
+import com.api.models.entities.salaryEntities.SalaryEntity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrimaryKeyJoinColumn;
 import lombok.Data;
 
 @Data
-@Entity(name = "employee")
+@Entity(name = "EMPLOYEES")
 public class EmployeeEntity {
 
     @Id
@@ -19,6 +26,7 @@ public class EmployeeEntity {
     )
     private String employeeId;
 
+    
     @Column(
         name = "country_code"
     )
@@ -45,31 +53,23 @@ public class EmployeeEntity {
     )
     private String email;
 
-    @Column(
-        name = "type"
-    )
-    private String type;
+    @OneToOne(mappedBy="employee", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private SalaryEntity salaryInfo;
+    
+    @OneToOne(mappedBy="employee", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private ContractEntity contractInfo;
 
-    @Column(
-        name = "time_type"
-    )
-    private String timeType;
+    @ManyToOne
+    private EmployeeEntity manager;
 
-    @Column(
-        name = "job_profile_id"
-    )
-    private String jobProfileId;
+    @OneToMany(mappedBy = "manager")
+    private List<EmployeeEntity> dependants;
 
-    @Column(
-        name = "hire_date",
-        updatable = false
-    )
-    private Date hireDate;
+    @ManyToOne
+    private EmployeeEntity matrixManager;
 
-    @Column(
-        name = "cost_center_id",
-        updatable = false
-    )
-    private String costCenterId;
-
+    @OneToMany(mappedBy = "matrixManager")
+    private List<EmployeeEntity> matrixDependants;
 }
