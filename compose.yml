@@ -28,6 +28,7 @@ services:
       context: ./
       dockerfile: ./api/Dockerfile
     image: consulting-api
+    restart: on-failure
     ports:
       - 8080:8080
     networks:
