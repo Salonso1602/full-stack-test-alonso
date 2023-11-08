@@ -1,6 +1,6 @@
-package com.api.models.entities.salaryEntities;
+package com.api.repository.entities.entityImplementations.salaryEntities;
 
-import com.api.models.entities.EmployeeEntity;
+import com.api.repository.entities.entityImplementations.EmployeeEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

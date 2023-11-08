@@ -1,9 +1,9 @@
-package com.api.models.entities;
+package com.api.repository.entities.entityImplementations;
 
 import java.util.List;
 
-import com.api.models.entities.contractEntities.ContractEntity;
-import com.api.models.entities.salaryEntities.SalaryEntity;
+import com.api.repository.entities.entityImplementations.contractEntities.ContractEntity;
+import com.api.repository.entities.entityImplementations.salaryEntities.SalaryEntity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -15,8 +15,8 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import lombok.Data;
 
-@Data
 @Entity(name = "EMPLOYEES")
+@Data
 public class EmployeeEntity {
 
     @Id

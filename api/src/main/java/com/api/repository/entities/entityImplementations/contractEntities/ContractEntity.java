@@ -1,8 +1,8 @@
-package com.api.models.entities.contractEntities;
+package com.api.repository.entities.entityImplementations.contractEntities;
 
 import java.util.Date;
 
-import com.api.models.entities.EmployeeEntity;
+import com.api.repository.entities.entityImplementations.EmployeeEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,8 +13,8 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
 
-@Data
 @Entity(name = "CONTRACTS")
+@Data
 public class ContractEntity {
 
     @Id

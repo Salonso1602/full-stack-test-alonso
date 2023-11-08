@@ -1,4 +1,4 @@
-package com.api.models.entities.contractEntities;
+package com.api.repository.entities.entityImplementations.contractEntities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
