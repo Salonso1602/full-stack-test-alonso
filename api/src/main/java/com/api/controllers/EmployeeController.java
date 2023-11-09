@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.services.implementations.EmployeeService;
+import com.api.services.interfaces.IEmployeeService;
 import com.api.services.models.Employee;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 public class EmployeeController {
 
 	@Autowired
-	EmployeeService empService; 
+	IEmployeeService empService; 
 
 	@Operation(summary = "Obtener todos los empleados")
 	@ApiResponses(value = {

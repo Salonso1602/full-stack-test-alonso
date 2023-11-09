@@ -3,7 +3,6 @@ package com.api.services.implementations;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.api.helpers.IEntityMapper;
 import com.api.helpers.mappers.EmployeeMapper;
@@ -12,7 +11,6 @@ import com.api.repository.entities.entityImplementations.EmployeeEntity;
 import com.api.services.interfaces.IEmployeeService;
 import com.api.services.models.Employee;
 
-@Service
 public class EmployeeService implements IEmployeeService {
 
     @Autowired
