@@ -35,3 +35,14 @@ services:
       - mynetwork
     depends_on:
       - mysql
+
+  consulting-web:
+    build: 
+      context: ./
+      dockerfile: ./consultingWeb/Dockerfile
+    image: consulting-web
+    restart: on-failure
+    ports:
+      - 80:80
+    networks:
+      - mynetwork
