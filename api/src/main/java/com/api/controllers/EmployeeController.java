@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.services.implementations.EmployeeService;
+import com.api.services.implementations.ImportData.DataImporter;
 import com.api.services.models.Employee;
 
 import java.util.ArrayList;
@@ -29,6 +30,9 @@ public class EmployeeController {
 	@Autowired
 	EmployeeService empService; 
 
+	@Autowired
+	DataImporter importer;
+
 	@Operation(summary = "Obtener todos los empleados")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Obtenidos Todos los Empleados", content = {
@@ -37,6 +41,11 @@ public class EmployeeController {
 	@GetMapping("/")
 	public List<Employee> getAll(@RequestParam(required = false) String type, @RequestParam(required = false) String compensationGrade) {
 		return empService.getAllEmployees();
+	}
+	@Operation(summary = "Cargar data de archivo")
+	@GetMapping("/justDoIt")
+	public Integer getAllFromFile() {
+		return importer.startupScan();
 	}
 	
 	@Operation(summary = "Obtener un empleado según su id")

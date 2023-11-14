@@ -1,4 +1,4 @@
-package com.api.repository;
+package com.api.repository.repositories.interfaces;
 
 import java.util.Map;
 

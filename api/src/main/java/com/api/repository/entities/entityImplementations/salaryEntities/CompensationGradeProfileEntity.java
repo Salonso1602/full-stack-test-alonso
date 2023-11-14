@@ -5,14 +5,21 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @Data
 @Entity(name = "COMPENSATION_GRADE_PROFILES")
+
+@NoArgsConstructor
+@AllArgsConstructor
 public class CompensationGradeProfileEntity {
 
     @Id
-    @Column(name="profile")
+    @Column(name="profile", nullable = false)
+    
     private String profile;
 
     @ManyToOne

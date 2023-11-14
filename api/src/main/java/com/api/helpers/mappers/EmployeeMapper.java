@@ -33,7 +33,7 @@ public class EmployeeMapper extends BaseMapper<Employee, EmployeeEntity> {
 
     @Override
     public EmployeeEntity mapReverse(Employee mod) {
-        return new EmployeeEntity();
+        return null;
     }
     
 }
