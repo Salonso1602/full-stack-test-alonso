@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17-jdk-alpine
+FROM gradle:8.4.0-jdk17-alpine
 VOLUME /tmp
 COPY ./data ./data
 COPY ./gradle ./gradle
@@ -7,5 +7,5 @@ COPY ./gradlew .
 COPY ./build.gradle .
 COPY ./settings.gradle .
 #COPY ./compose.yml /
-RUN ["./gradlew", "build"]
+RUN ["gradle", "build"]
 ENTRYPOINT ["java","-jar","./build/libs/ConsultingAPI-0.0.1-SNAPSHOT.jar"]
