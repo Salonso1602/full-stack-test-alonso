@@ -4,10 +4,10 @@
 
 <mat-card *ngFor="let emp of emps">
     <mat-card-header>
-        {{emp.lastName}}
+        {{emp.firstName}} {{emp.lastName}} ID:{{emp.employeeId}}
     </mat-card-header>
     <mat-card-actions align="end">
-        <button mat-mini-fab color="primary" (click)="test(emp)">
+        <button mat-mini-fab color="primary" (click)="openEmployeeDetails(emp)">
             <mat-icon>info</mat-icon>
         </button>
     </mat-card-actions>

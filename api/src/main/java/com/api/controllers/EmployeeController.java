@@ -33,7 +33,7 @@ public class EmployeeController {
 			@ApiResponse(responseCode = "200", description = "Obtenidos Todos los Empleados", content = {
 					@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Employee.class))) }),
 			@ApiResponse(responseCode = "201", description = "No hay empleados registrados", content = @Content)})
-	@GetMapping("/")
+	@GetMapping("")
 	public List<Employee> getAll(@RequestParam(required = false) String type, @RequestParam(required = false) String compensationGrade) {
 		return empService.getAllEmployees();
 	}

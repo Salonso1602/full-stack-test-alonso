@@ -34,12 +34,12 @@ export class EmployeeService {
   constructor(private http : HttpClient) { }
 
   getAllEmployees() : Observable<Employee[]>{
-    //return this.http.get<Employee[]>(this.baseUrl);
-    return of(this.testEmps)
+    return this.http.get<Employee[]>(this.baseUrl);
+    //return of(this.testEmps)
   }
 
-  getEmployeeById(employeeId : String) : Observable<Employee[]>{
-    return this.http.get<Employee[]>(this.baseUrl+'/'+employeeId);
+  getEmployeeById(employeeId : String) : Observable<Employee>{
+    return this.http.get<Employee>(this.baseUrl+'/'+employeeId);
   }
 
   getEmployeeByManager(managerId : String) : Observable<Employee[]>{

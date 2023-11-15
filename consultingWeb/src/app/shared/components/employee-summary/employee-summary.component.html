@@ -1,0 +1,21 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>
+            <p>{{employee?.firstName}} {{employee?.lastName}}</p>
+        </mat-card-title>
+        <mat-card-subtitle>
+            <p>id: {{employee?.employeeId}}</p>
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <p>Correo electrónico: {{employee?.email}}</p>
+        <p>Código de País: {{employee?.countryCode}}</p>
+        <p>Fecha Contratado: {{employee?.hireDate}}</p>
+        <p>Puesto: {{employee?.jobProfile?.jobProfile}} - {{employee?.jobProfile?.jobFamily}}</p>
+        <p>Tipo: {{employee?.type}} {{employee?.timeType}}</p>
+        <p>Centro de Costo: {{employee?.costCenter?.costCenterId}} - {{employee?.costCenter?.costCenterName}}</p>
+    </mat-card-content>
+    <mat-card-actions align="end">
+        <button mat-button (click)="closeDialog()">Cerrar</button>
+      </mat-card-actions>
+</mat-card>
