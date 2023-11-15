@@ -1,6 +1,5 @@
 package com.api.services.models;
 
-import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,11 +18,8 @@ public class Employee {
     private String middleName;
     private String lastName;
     private String email;
-    private String type;
-    private String timeType;
-    private JobProfile jobProfile;
-    private Date hireDate;
-    private CostCenter costCenter;
+    private ContractInfo contract;
+    private SalaryInfo salary;
 
 
     public String getFullName(){
