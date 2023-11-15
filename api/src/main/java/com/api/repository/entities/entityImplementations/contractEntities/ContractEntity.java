@@ -27,13 +27,11 @@ public class ContractEntity {
 
     @Id
     @Column(name = "employee_id", nullable = false)
-    
     private String employeeId;
 
     @OneToOne
     @MapsId
     @JoinColumn(name = "employee_id")
-    
     private EmployeeEntity employee;
     
     

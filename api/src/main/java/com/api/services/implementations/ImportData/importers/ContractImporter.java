@@ -5,16 +5,17 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 
+import com.api.repository.entities.entityImplementations.EmployeeEntity;
 import com.api.repository.entities.entityImplementations.contractEntities.ContractEntity;
 import com.api.repository.entities.entityImplementations.contractEntities.CostCenterEntity;
 import com.api.repository.entities.entityImplementations.contractEntities.EmployeeTypeEntity;
 import com.api.repository.entities.entityImplementations.contractEntities.JobFamilyEntity;
 import com.api.repository.entities.entityImplementations.contractEntities.JobProfileEntity;
 import com.api.repository.entities.entityImplementations.contractEntities.TimeTypeEntity;
+import com.api.repository.repositories.interfaces.IEmployeeRepository;
 import com.api.repository.repositories.interfaces.contractRepos.IContractRepository;
 import com.api.repository.repositories.interfaces.contractRepos.ICostCenterRepository;
 import com.api.repository.repositories.interfaces.contractRepos.IEmployeeTypeRepository;
@@ -37,18 +38,27 @@ public class ContractImporter extends BaseEntityImporter{
     private ICostCenterRepository repoCost;
     @Autowired
     private IEmployeeTypeRepository repoEmpType;
+    @Autowired
+    private IEmployeeRepository repoEmps;
 
 
     @Override
     public int importData(Map<String, String> valuesMap) {
-        System.out.println("Entered con importer");
-        buildContract(valuesMap);
+        if(canImport(valuesMap)){
+            buildContract(valuesMap);
+            if(hasNext()){
+                return super.nextImporter.importData(valuesMap)+1;
+            }
+            else{
+                return 1;
+            }
+        }
         if(hasNext()){
-            return super.nextImporter.importData(valuesMap)+1;
-        }
-        else{
-            return 1;
-        }
+                return super.nextImporter.importData(valuesMap);
+            }
+            else{
+                return 0;
+            }
     }
 
     private JobFamilyEntity buildJobFamily(Map<String, String> valuesMap){
@@ -76,8 +86,9 @@ public class ContractImporter extends BaseEntityImporter{
             System.out.println(e.getMessage());
         }
         
-        return repoContract.save( ContractEntity.builder()
+        ContractEntity cont = repoContract.save( ContractEntity.builder()
         .employeeId(valuesMap.get("Employee ID"))
+        .employee(repoEmps.findById(valuesMap.get("Employee ID")).get())
         .timeType(buildTimeType(valuesMap))
         .costCenter(buildCenter(valuesMap))
         .type(buildEmployeeType(valuesMap))
@@ -85,6 +96,24 @@ public class ContractImporter extends BaseEntityImporter{
         .jobProfile(buildJobProfile(valuesMap))
         .hireDate(hireDate)
         .build());
+
+        System.out.println(cont.toString());
+
+        return cont;
+        }
+
+    @Override
+    public boolean canImport(Map<String, String> valuesMap) {
+        return (
+            valuesMap.get("Job Family") != null &&
+            valuesMap.get("Job Profile") != null &&
+            valuesMap.get("Time Type") != null &&
+            valuesMap.get("Cost Center - ID") != null &&
+            valuesMap.get("Cost Center - Name") != null &&
+            valuesMap.get("Employee Type") != null &&
+            valuesMap.get("Hire Date") != null &&
+            valuesMap.get("Employee ID") != null
+        );
     }
     
 }

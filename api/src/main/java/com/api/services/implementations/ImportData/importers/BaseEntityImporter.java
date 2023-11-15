@@ -16,4 +16,6 @@ public abstract class BaseEntityImporter {
     }
 
     public abstract int importData(Map<String, String> valuesMap);
+
+    public abstract boolean canImport(Map<String, String> valuesMap);
 }

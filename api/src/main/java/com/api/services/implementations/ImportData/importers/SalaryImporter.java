@@ -4,7 +4,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import com.api.repository.entities.entityImplementations.salaryEntities.CompensationGradeEntity;
 import com.api.repository.entities.entityImplementations.salaryEntities.CompensationGradeProfileEntity;
@@ -29,14 +28,21 @@ public class SalaryImporter extends BaseEntityImporter {
 
     @Override
     public int importData(Map<String, String> valuesMap) {
-        System.out.println("Entered sal importer");
-        buildSalaryEntity(valuesMap);
+        if(canImport(valuesMap)){
+            buildSalaryEntity(valuesMap);
+            if(hasNext()){
+                return super.nextImporter.importData(valuesMap)+1;
+            }
+            else{
+                return 1;
+            } 
+        }
         if(hasNext()){
-            return super.nextImporter.importData(valuesMap)+1;
-        }
-        else{
-            return 1;
-        }
+                return super.nextImporter.importData(valuesMap);
+            }
+            else{
+                return 0;
+            } 
     }
     
     private SalaryEntity buildSalaryEntity (Map<String, String> valuesMap){
@@ -48,6 +54,7 @@ public class SalaryImporter extends BaseEntityImporter {
         .pmr(Float.parseFloat(valuesMap.get("Compa-Ratio"))*100)
         .ytdCommissions(Float.parseFloat(valuesMap.get("YTD Commissions")))
         .build();
+        System.out.println(sal.toString());
         return repoSal.save(sal);
     }
 
@@ -59,5 +66,18 @@ public class SalaryImporter extends BaseEntityImporter {
     }
     private CurrencyEntity buildCurrencyEntity (Map<String, String> valuesMap){
         return repoCur.save(new CurrencyEntity(valuesMap.get("Currency"),valuesMap.get("Currency Name"),valuesMap.get("Currency Symbol")));
+    }
+
+    @Override
+    public boolean canImport(Map<String, String> valuesMap) {
+        return (
+            valuesMap.containsKey("Annual Reference Salary") &&
+            valuesMap.containsKey("Employee ID") &&
+            valuesMap.containsKey("Compa-Ratio") &&
+            valuesMap.containsKey("YTD Commissions") &&
+            valuesMap.containsKey("Compensation Grade") &&
+            valuesMap.containsKey("Compensation Grade Profile") &&
+            valuesMap.containsKey("Currency")
+        );
     }
 }
