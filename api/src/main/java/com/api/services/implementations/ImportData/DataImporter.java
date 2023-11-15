@@ -43,6 +43,14 @@ public class DataImporter implements IDataImporter {
                     System.out.println(e.getStackTrace()[0].getFileName() + e.getStackTrace()[0].getLineNumber() + e.getStackTrace()[0].toString());
                 }
             }
+            for (Map<String, String> row : rows) {
+                try {
+                    count += importers.getManagersChain().importData(row);
+                } catch (Exception e) {
+                    System.out.println("ImportDataExcp " + e.getMessage() + e.getClass());
+                    System.out.println(e.getStackTrace()[0].getFileName() + e.getStackTrace()[0].getLineNumber() + e.getStackTrace()[0].toString());
+                }
+            }
         } catch (FileNotFoundException ex) {
             System.out.println(loc + " FILE NOT FOUND");
         }

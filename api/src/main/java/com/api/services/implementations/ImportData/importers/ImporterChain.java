@@ -16,7 +16,11 @@ public class ImporterChain {
 
 
     public BaseEntityImporter getChain(){
-        emps.setNext(mans).setNext(sals).setNext(contrs);
+        emps.setNext(sals).setNext(contrs);
         return emps;
+    }
+
+    public BaseEntityImporter getManagersChain(){
+        return mans;
     }
 }
