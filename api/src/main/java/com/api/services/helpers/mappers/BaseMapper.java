@@ -1,9 +1,9 @@
-package com.api.helpers.mappers;
+package com.api.services.helpers.mappers;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.api.helpers.IEntityMapper;
+import com.api.services.helpers.IEntityMapper;
 
 public abstract class BaseMapper<T,S> implements  IEntityMapper<T,S>{
 

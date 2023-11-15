@@ -11,26 +11,6 @@ export class EmployeeService {
 
   private baseUrl = environment.backendUrl+"/employees";
 
-  private testEmps : Employee[] = [{
-    employeeId : "0001",
-    countryCode : "05080",
-    firstName : "Leo",
-    middleName : "Messi",
-    lastName : "Messi",
-    email : "messi@mail.com",
-    type : "Student",
-    timeType : "Fulltime",
-    jobProfile : {
-                  jobProfile : "Developer",
-                  jobFamily : "App"
-                },
-    hireDate : new Date(),
-    costCenter : {
-      costCenterId : "0049",
-      costCenterName : "CENTROOO AA"
-    }
-    }]
-
   constructor(private http : HttpClient) { }
 
   getAllEmployees() : Observable<Employee[]>{

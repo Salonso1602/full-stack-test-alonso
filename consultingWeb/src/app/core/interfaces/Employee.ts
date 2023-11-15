@@ -1,5 +1,5 @@
-import { JobProfile } from "./JobProfile";
-import { CostCenter } from "./CostCenter";
+import { ContractInfo } from "./ContractInfo";
+import { SalaryInfo } from "./SalaryInfo";
 
 export interface Employee {
 employeeId : String,
@@ -8,9 +8,6 @@ firstName : String,
 middleName : String,
 lastName : String,
 email : String,
-type : String,
-timeType : String,
-jobProfile : JobProfile,
-hireDate : Date,
-costCenter : CostCenter
+contract : ContractInfo,
+salary : SalaryInfo
 }

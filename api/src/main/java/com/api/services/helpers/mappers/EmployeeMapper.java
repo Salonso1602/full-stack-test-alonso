@@ -1,4 +1,4 @@
-package com.api.helpers.mappers;
+package com.api.services.helpers.mappers;
 
 import com.api.repository.entities.entityImplementations.EmployeeEntity;
 import com.api.services.models.Employee;

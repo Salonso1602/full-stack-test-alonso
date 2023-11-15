@@ -1,9 +1,9 @@
-package com.api.helpers.mappers;
+package com.api.services.helpers.mappers;
 
-import com.api.helpers.IEntityMapper;
 import com.api.repository.entities.entityImplementations.contractEntities.ContractEntity;
 import com.api.repository.entities.entityImplementations.contractEntities.CostCenterEntity;
 import com.api.repository.entities.entityImplementations.contractEntities.JobProfileEntity;
+import com.api.services.helpers.IEntityMapper;
 import com.api.services.models.ContractInfo;
 import com.api.services.models.CostCenter;
 import com.api.services.models.JobProfile;

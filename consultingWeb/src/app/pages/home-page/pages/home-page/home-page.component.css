@@ -1,0 +1,9 @@
+button{
+    width: 100%;
+    background-color: rgb(227, 238, 253);
+}
+
+mat-card{
+    outline: thin;
+    margin: 1em;
+}
