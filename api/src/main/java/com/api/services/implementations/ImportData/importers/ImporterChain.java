@@ -11,10 +11,12 @@ public class ImporterChain {
     private EmployeeImporter emps;
     @Autowired
     private SalaryImporter sals;
+    @Autowired
+    private ManagerImporter mans;
 
 
     public BaseEntityImporter getChain(){
-        emps.setNext(sals).setNext(contrs);
+        emps.setNext(mans).setNext(sals).setNext(contrs);
         return emps;
     }
 }

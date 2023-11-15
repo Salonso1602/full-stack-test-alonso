@@ -3,7 +3,6 @@ VOLUME /tmp
 COPY ./src ./src
 COPY ./data ./data
 COPY ./build ./build
-COPY ./bin ./bin
 COPY ./gradle ./gradle
 
 COPY build.gradle .

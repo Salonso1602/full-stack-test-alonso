@@ -2,13 +2,13 @@ package com.api.services.implementations.ImportData.importers;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 
-import com.api.repository.entities.entityImplementations.EmployeeEntity;
 import com.api.repository.entities.entityImplementations.contractEntities.ContractEntity;
 import com.api.repository.entities.entityImplementations.contractEntities.CostCenterEntity;
 import com.api.repository.entities.entityImplementations.contractEntities.EmployeeTypeEntity;
@@ -22,9 +22,10 @@ import com.api.repository.repositories.interfaces.contractRepos.IEmployeeTypeRep
 import com.api.repository.repositories.interfaces.contractRepos.IJobFamilyRepository;
 import com.api.repository.repositories.interfaces.contractRepos.IJobProfileRepository;
 import com.api.repository.repositories.interfaces.contractRepos.ITimeTypeRepository;
+import com.api.services.models.DataHeaders;
 
 @Component
-public class ContractImporter extends BaseEntityImporter{
+public class ContractImporter extends BaseEntityImporter {
 
     @Autowired
     private IContractRepository repoContract;
@@ -41,79 +42,83 @@ public class ContractImporter extends BaseEntityImporter{
     @Autowired
     private IEmployeeRepository repoEmps;
 
-
     @Override
     public int importData(Map<String, String> valuesMap) {
-        if(canImport(valuesMap)){
+        if (canImport(valuesMap)) {
             buildContract(valuesMap);
-            if(hasNext()){
-                return super.nextImporter.importData(valuesMap)+1;
-            }
-            else{
+            if (hasNext()) {
+                return super.nextImporter.importData(valuesMap) + 1;
+            } else {
                 return 1;
             }
         }
-        if(hasNext()){
-                return super.nextImporter.importData(valuesMap);
-            }
-            else{
-                return 0;
-            }
-    }
-
-    private JobFamilyEntity buildJobFamily(Map<String, String> valuesMap){
-        return repoJF.save(new JobFamilyEntity(valuesMap.get("Job Family")));
-    }
-    private JobProfileEntity buildJobProfile(Map<String, String> valuesMap){
-        return repoJP.save(new JobProfileEntity(valuesMap.get("Job Profile"), buildJobFamily(valuesMap)));
-    }
-    private TimeTypeEntity buildTimeType(Map<String, String> valuesMap){
-        return repoTime.save(new TimeTypeEntity(valuesMap.get("Time Type")));
-    }
-    private CostCenterEntity buildCenter(Map<String, String> valuesMap){
-        return repoCost.save(new CostCenterEntity(valuesMap.get("Cost Center - ID"), valuesMap.get("Cost Center - Name")));
-    }
-    private EmployeeTypeEntity buildEmployeeType(Map<String, String> valuesMap){
-        return repoEmpType.save(new EmployeeTypeEntity(valuesMap.get("Employee Type")));
-    }
-    private ContractEntity buildContract(Map<String, String> valuesMap){
-
-        Date hireDate = new Date();
-        try{
-            hireDate = new SimpleDateFormat("dd/MM/yyyy").parse(valuesMap.get("Hire Date"));
+        else{
+            System.out.println(valuesMap);
         }
-        catch(Exception e){
+        if (hasNext()) {
+            return super.nextImporter.importData(valuesMap);
+        } else {
+            return 0;
+        }
+    }
+
+    private JobFamilyEntity buildJobFamily(Map<String, String> valuesMap) {
+        return repoJF.findById(valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.JobFamily)))
+            .orElse(repoJF.save(new JobFamilyEntity(valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.JobFamily)))));
+    }
+
+    private JobProfileEntity buildJobProfile(Map<String, String> valuesMap) {
+        return repoJP.findById(valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.JobProfile)))
+            .orElse(repoJP.save(new JobProfileEntity(valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.JobProfile)), buildJobFamily(valuesMap))));
+    }
+
+    private TimeTypeEntity buildTimeType(Map<String, String> valuesMap) {
+        return repoTime.findById(valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.TimeType)))
+            .orElse(repoTime.save(new TimeTypeEntity(valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.TimeType)))));
+    }
+
+    private CostCenterEntity buildCenter(Map<String, String> valuesMap) {
+        return repoCost.findById(valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.CostCenterId)))
+            .orElse(repoCost.save(new CostCenterEntity(valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.CostCenterId)), valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.CostCenterName)))));
+    }
+
+    private EmployeeTypeEntity buildEmployeeType(Map<String, String> valuesMap) {
+        return repoEmpType.findById(valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.EmployeeType)))
+            .orElse(repoEmpType.save(new EmployeeTypeEntity(valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.EmployeeType)))));
+    }
+
+    private ContractEntity buildContract(Map<String, String> valuesMap) {
+
+        Date hireDate = null;
+        try {
+            hireDate = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH)
+                    .parse(valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.HireDate)));
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        
-        ContractEntity cont = repoContract.save( ContractEntity.builder()
-        .employeeId(valuesMap.get("Employee ID"))
-        .employee(repoEmps.findById(valuesMap.get("Employee ID")).get())
-        .timeType(buildTimeType(valuesMap))
-        .costCenter(buildCenter(valuesMap))
-        .type(buildEmployeeType(valuesMap))
-        .timeType(buildTimeType(valuesMap))
-        .jobProfile(buildJobProfile(valuesMap))
-        .hireDate(hireDate)
-        .build());
 
-        System.out.println(cont.toString());
-
+        ContractEntity cont = repoContract.save(ContractEntity.builder()
+                .employee(repoEmps.findById(valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.EmployeeId))).get())
+                .timeType(buildTimeType(valuesMap))
+                .costCenter(buildCenter(valuesMap))
+                .type(buildEmployeeType(valuesMap))
+                .timeType(buildTimeType(valuesMap))
+                .jobProfile(buildJobProfile(valuesMap))
+                .hireDate(hireDate)
+                .build());
         return cont;
-        }
+    }
 
     @Override
     public boolean canImport(Map<String, String> valuesMap) {
-        return (
-            valuesMap.get("Job Family") != null &&
-            valuesMap.get("Job Profile") != null &&
-            valuesMap.get("Time Type") != null &&
-            valuesMap.get("Cost Center - ID") != null &&
-            valuesMap.get("Cost Center - Name") != null &&
-            valuesMap.get("Employee Type") != null &&
-            valuesMap.get("Hire Date") != null &&
-            valuesMap.get("Employee ID") != null
-        );
+        return (valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.JobFamily)) != null &&
+                valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.JobProfile)) != null &&
+                valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.TimeType)) != null &&
+                valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.CostCenterId)) != null &&
+                valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.CostCenterName)) != null &&
+                valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.EmployeeType)) != null &&
+                valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.HireDate)) != null &&
+                valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.EmployeeId)) != null);
     }
-    
+
 }

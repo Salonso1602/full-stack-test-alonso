@@ -9,16 +9,17 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+//import jakarta.persistence.JoinColumn;
+//import jakarta.persistence.ManyToOne;
+//import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Entity(name = "EMPLOYEES")
 @Data
@@ -59,9 +60,15 @@ public class EmployeeEntity {
     @PrimaryKeyJoinColumn
     private ContractEntity contractInfo;
 
-    @Column(name="manager_id")
-    private String manager;
+    @ManyToOne
+    private EmployeeEntity manager;
 
-    @Column(name = "matrix_manager_id")
-    private String matrixManager;
+    @OneToMany(mappedBy = "manager")
+    private List<EmployeeEntity> dependants;
+
+    @ManyToOne
+    private EmployeeEntity matrixManager;
+
+    @OneToMany(mappedBy = "matrixManager")
+    private List<EmployeeEntity> matrixDependants;
 }

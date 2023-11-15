@@ -8,7 +8,6 @@ import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Data
 @Entity(name = "COMPENSATION_GRADE_PROFILES")

@@ -13,7 +13,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Data
 @Entity(name = "SALARIES")
@@ -25,7 +24,6 @@ public class SalaryEntity {
     
     @Id
     @Column(name = "employee_id", nullable = false)
-    
     private String employeeId;
 
     @OneToOne

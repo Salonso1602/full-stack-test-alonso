@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.api.repository.entities.entityImplementations.EmployeeEntity;
 import com.api.repository.repositories.interfaces.IEmployeeRepository;
+import com.api.services.models.DataHeaders;
 
 @Component
 public class EmployeeImporter extends BaseEntityImporter {
@@ -32,31 +33,26 @@ public class EmployeeImporter extends BaseEntityImporter {
     }
 
     private EmployeeEntity buildEmployeeEntity(Map<String, String> valuesMap) {
+        
         EmployeeEntity emp = EmployeeEntity.builder()
-                .employeeId(valuesMap.get("Employee ID"))
-                .countryCode(valuesMap.get("Home CNUM"))
-                .firstName(valuesMap.get("First Name"))
-                .middleName(valuesMap.get("Middle Name"))
-                .lastName(valuesMap.get("Last Name"))
-                .email(valuesMap.get("Email - Primary Work"))
-                .manager(valuesMap.get("Manager Employee ID"))
-                .matrixManager(valuesMap.get("Matrix Manager Employee ID"))
+                .employeeId(valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.EmployeeId)))
+                .countryCode(valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.HomeCode)))
+                .firstName(valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.FirstName)))
+                .middleName(valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.MidName)))
+                .lastName(valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.LastName)))
+                .email(valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.Email)))
                 .build();
-
         return repo.save(emp);
     }
 
     @Override
     public boolean canImport(Map<String, String> valuesMap) {
         return (
-            valuesMap.containsKey("Employee ID") &&
-            valuesMap.containsKey("Home CNUM") &&
-            valuesMap.containsKey("First Name") &&
-            valuesMap.containsKey("Middle Name") &&
-            valuesMap.containsKey("Last Name") &&
-            valuesMap.containsKey("Email - Primary Work") &&
-            valuesMap.containsKey("Manager Employee ID") &&
-            valuesMap.containsKey("Matrix Manager Employee ID")
+            valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.EmployeeId)) != null &&
+            valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.HomeCode)) != null &&
+            valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.FirstName)) != null &&
+            valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.LastName)) != null &&
+            valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.Email)) != null 
         );
     }
 }

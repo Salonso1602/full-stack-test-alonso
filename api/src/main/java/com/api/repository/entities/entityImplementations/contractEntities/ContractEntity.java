@@ -15,7 +15,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Entity(name = "CONTRACTS")
 @Data
@@ -35,7 +34,7 @@ public class ContractEntity {
     private EmployeeEntity employee;
     
     
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="job_profile_id", referencedColumnName = "profile", nullable = false)
     private JobProfileEntity jobProfile;
 

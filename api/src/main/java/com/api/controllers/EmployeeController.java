@@ -8,11 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.api.services.implementations.EmployeeService;
-import com.api.services.implementations.ImportData.DataImporter;
+import com.api.services.interfaces.IEmployeeService;
 import com.api.services.models.Employee;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,10 +26,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 public class EmployeeController {
 
 	@Autowired
-	EmployeeService empService; 
-
-	@Autowired
-	DataImporter importer;
+	IEmployeeService empService; 
 
 	@Operation(summary = "Obtener todos los empleados")
 	@ApiResponses(value = {
@@ -42,11 +37,6 @@ public class EmployeeController {
 	public List<Employee> getAll(@RequestParam(required = false) String type, @RequestParam(required = false) String compensationGrade) {
 		return empService.getAllEmployees();
 	}
-	@Operation(summary = "Cargar data de archivo")
-	@GetMapping("/justDoIt")
-	public Integer getAllFromFile() {
-		return importer.startupScan();
-	}
 	
 	@Operation(summary = "Obtener un empleado según su id")
 	@ApiResponses(value = {
@@ -55,8 +45,7 @@ public class EmployeeController {
 			@ApiResponse(responseCode = "404", description = "No se encontró un empleado registrado con el Id dado", content = @Content)})
 	@GetMapping("/{id}")
 	public Employee getEmployeeById(@PathVariable String id) {
-		Employee res = new Employee();
-		return res;
+		return empService.getEmployeeById(id);
 	}
 	
 	@Operation(summary = "Obtener un empleado según la id de su manager")
@@ -66,9 +55,7 @@ public class EmployeeController {
 			@ApiResponse(responseCode = "404", description = "No se encontró un managerId dado", content = @Content),
 			@ApiResponse(responseCode = "201", description = "Ese manager no tiene dependientes", content = @Content)})
 	@GetMapping("/managedBy/{id}")
-	public ArrayList<Employee> getEmployeeByManager(@PathVariable String id) {
-		ArrayList<Employee> res = new ArrayList<>();
-		res.add(new Employee());
-		return res;
+	public List<Employee> getEmployeeByManager(@PathVariable String id) {
+		return empService.getEmployeesByManager(id);
 	}
 }

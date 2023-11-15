@@ -9,10 +9,12 @@ import com.api.repository.entities.entityImplementations.salaryEntities.Compensa
 import com.api.repository.entities.entityImplementations.salaryEntities.CompensationGradeProfileEntity;
 import com.api.repository.entities.entityImplementations.salaryEntities.CurrencyEntity;
 import com.api.repository.entities.entityImplementations.salaryEntities.SalaryEntity;
+import com.api.repository.repositories.interfaces.IEmployeeRepository;
 import com.api.repository.repositories.interfaces.salaryRepos.ICompensationGradeProfileRepository;
 import com.api.repository.repositories.interfaces.salaryRepos.ICompensationGradeRepository;
 import com.api.repository.repositories.interfaces.salaryRepos.ICurrencyRepository;
 import com.api.repository.repositories.interfaces.salaryRepos.ISalaryRepository;
+import com.api.services.models.DataHeaders;
 
 @Component
 public class SalaryImporter extends BaseEntityImporter {
@@ -25,6 +27,8 @@ public class SalaryImporter extends BaseEntityImporter {
     private ICompensationGradeProfileRepository repoCGP;
     @Autowired 
     private ICurrencyRepository repoCur;
+    @Autowired
+    private IEmployeeRepository repoEmps;
 
     @Override
     public int importData(Map<String, String> valuesMap) {
@@ -46,38 +50,57 @@ public class SalaryImporter extends BaseEntityImporter {
     }
     
     private SalaryEntity buildSalaryEntity (Map<String, String> valuesMap){
+        float pmr =  0;
+        try{
+            pmr = Float.parseFloat(valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.PMR)))*100;
+        } catch (Exception e){
+            //default to val 0
+        }
+        float ytd =  0;
+        try{
+            ytd = Float.parseFloat(valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.YTD)));
+        } catch (Exception e){
+            //default to val 0
+        }
+        float as =  0;
+        try{
+            as = Float.parseFloat(valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.AnnualSalary)));
+        } catch (Exception e){
+            //default to val 0
+        }
+
         SalaryEntity sal = SalaryEntity.builder()
         .compensationGrade(buildCompensationGradeProfile(valuesMap))
-        .annualSalary(Float.parseFloat(valuesMap.get("Annual Reference Salary")))
+        .annualSalary(as)
         .currency(buildCurrencyEntity(valuesMap))
-        .employeeId(valuesMap.get("Employee ID"))
-        .pmr(Float.parseFloat(valuesMap.get("Compa-Ratio"))*100)
-        .ytdCommissions(Float.parseFloat(valuesMap.get("YTD Commissions")))
+        .employee(repoEmps.findById(valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.EmployeeId))).get())
+        .pmr(pmr)
+        .ytdCommissions(ytd)
         .build();
-        System.out.println(sal.toString());
+
         return repoSal.save(sal);
     }
 
     private CompensationGradeEntity buildCompensationGrade(Map<String, String> valuesMap){
-        return repoCG.save(new CompensationGradeEntity(valuesMap.get("Compensation Grade")));
+        return repoCG.save(new CompensationGradeEntity(valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.CompensationGrade))));
     }
     private CompensationGradeProfileEntity buildCompensationGradeProfile(Map<String, String> valuesMap){
-        return repoCGP.save (new CompensationGradeProfileEntity(valuesMap.get("Compensation Grade Profile"), buildCompensationGrade(valuesMap)));
+        return repoCGP.save (new CompensationGradeProfileEntity(valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.CompensationGradeProfile)), buildCompensationGrade(valuesMap)));
     }
     private CurrencyEntity buildCurrencyEntity (Map<String, String> valuesMap){
-        return repoCur.save(new CurrencyEntity(valuesMap.get("Currency"),valuesMap.get("Currency Name"),valuesMap.get("Currency Symbol")));
+        return repoCur.save(new CurrencyEntity(valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.Currency))));
     }
 
     @Override
     public boolean canImport(Map<String, String> valuesMap) {
         return (
-            valuesMap.containsKey("Annual Reference Salary") &&
-            valuesMap.containsKey("Employee ID") &&
-            valuesMap.containsKey("Compa-Ratio") &&
-            valuesMap.containsKey("YTD Commissions") &&
-            valuesMap.containsKey("Compensation Grade") &&
-            valuesMap.containsKey("Compensation Grade Profile") &&
-            valuesMap.containsKey("Currency")
+            valuesMap.containsKey(DataHeaders.getField(DataHeaders.DataFields.AnnualSalary)) &&
+            valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.EmployeeId)) != null &&
+            valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.PMR)) != null &&
+            valuesMap.containsKey(DataHeaders.getField(DataHeaders.DataFields.YTD)) &&
+            valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.CompensationGrade)) != null &&
+            valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.CompensationGradeProfile)) != null &&
+            valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.Currency)) != null
         );
     }
 }
