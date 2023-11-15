@@ -9,19 +9,27 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity(name = "SALARIES")
+@Builder
+
+@NoArgsConstructor
+@AllArgsConstructor
 public class SalaryEntity {
     
     @Id
-    @Column(name = "employee_id")
+    @Column(name = "employee_id", nullable = false)
     private String employeeId;
 
     @OneToOne
     @MapsId
-    @JoinColumn(name = "employee_id")
+    @JoinColumn(name = "employee_id", nullable = false)
+    
     private EmployeeEntity employee;
 
     @Column(name = "pmr")
@@ -38,6 +46,6 @@ public class SalaryEntity {
     private CompensationGradeProfileEntity compensationGrade;
 
     @ManyToOne
-    @JoinColumn(name = "currency_id", referencedColumnName = "code")
+    @JoinColumn(name = "currency_id", referencedColumnName = "code", nullable = false)
     private CurrencyEntity currency;
 }

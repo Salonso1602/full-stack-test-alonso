@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.api.helpers.IEntityMapper;
 import com.api.helpers.mappers.EmployeeMapper;
-import com.api.repository.IEmployeeRepository;
 import com.api.repository.entities.entityImplementations.EmployeeEntity;
+import com.api.repository.repositories.interfaces.IEmployeeRepository;
 import com.api.services.interfaces.IEmployeeService;
 import com.api.services.models.Employee;
 

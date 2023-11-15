@@ -53,10 +53,6 @@ public class xlsxImporter {
                             data.get(i).put(colNames.get(j), cell.getBooleanCellValue() + ""); 
                             break;
 
-                        case FORMULA: 
-                            data.get(i).put(colNames.get(j), cell.getCellFormula() + "");
-                            break;
-
                         default:
                             data.get(i).put(colNames.get(j), cell.getRichStringCellValue().getString());
                             break;
