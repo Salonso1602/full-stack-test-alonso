@@ -1,32 +1,39 @@
 <mat-card>
-    <mat-card-header>
+    <mat-card-header *ngIf="employee">
         <mat-card-title>
-            <p>{{employee?.firstName}} {{employee?.lastName}}</p>
+            <p>{{employee.firstName}} {{employee.lastName}}</p>
         </mat-card-title>
         <mat-card-subtitle>
-            <p>id: {{employee?.employeeId}}</p>
+            <p>id: {{employee.employeeId}}</p>
         </mat-card-subtitle>
     </mat-card-header>
-    <mat-card-content>
+    <mat-card-content *ngIf="employee">
         <mat-divider></mat-divider>
         <h2>Información Personal</h2>
-        <p>Nombre Completo: {{employee?.firstName}} {{employee?.middleName}} {{employee?.lastName}}</p>
-        <p>Correo electrónico: {{employee?.email}}</p>
-        <p>Código de País: {{employee?.countryCode}}</p>
+        <p>Nombre Completo: {{employee.firstName}} {{employee.middleName}} {{employee.lastName}}</p>
+        <p>Correo electrónico: {{employee.email}}</p>
+        <p>Código de País: {{employee.countryCode}}</p>
         <mat-divider></mat-divider>
-        <h2>Información Contrato</h2>
-        <p>Fecha Contratado: {{employee?.contract?.hireDate}}</p>
-        <p>Puesto: {{employee?.contract?.jobProfile?.jobProfile}} - {{employee?.contract?.jobProfile?.jobFamily}}</p>
-        <p>Tipo: {{employee?.contract?.type}} {{employee?.contract?.timeType}}</p>
-        <p>Centro de Costo: {{employee?.contract?.costCenter?.costCenterId}} - {{employee?.contract?.costCenter?.costCenterName}}</p>
+        <div *ngIf="employee.contract">
+            <h2>Información Contrato</h2>
+            <p>Fecha Contratado: {{employee.contract.hireDate}}</p>
+            <p>Puesto: {{employee.contract.jobProfile.jobProfile}} - {{employee.contract.jobProfile.jobFamily}}
+            </p>
+            <p>Tipo: {{employee.contract.type}} {{employee.contract.timeType}}</p>
+            <p>Centro de Costo: {{employee.contract.costCenter.costCenterId}} -
+                {{employee.contract.costCenter.costCenterName}}</p>
+        </div>
         <mat-divider></mat-divider>
-        <h2>Información Salarial</h2>
-        <p>Salario Mensual: {{employee?.salary?.annualSalary //12}} {{employee?.salary?.currency}}</p>
-        <p>Ganancias de Comisión: {{employee?.salary?.ytdCommissions}}</p>
-        <p>Banda y Sub-Banda: {{employee?.salary?.compensationGrade}} - {{employee?.salary?.compensationGradeProfile}}</p>
-        <p>PMR: {{employee?.salary?.pmr}}%</p>
+        <div *ngIf="employee.salary">
+            <h2>Información Salarial</h2>
+            <p>Salario Mensual: {{employee.salary.annualSalary //12}} {{employee.salary.currency}}</p>
+            <p>Ganancias de Comisión: {{employee.salary.ytdCommissions}}</p>
+            <p>Banda y Sub-Banda: {{employee.salary.compensationGrade}} -
+                {{employee.salary.compensationGradeProfile}}</p>
+            <p>PMR: {{employee.salary.pmr}}%</p>
+        </div>
     </mat-card-content>
     <mat-card-actions align="end">
         <button mat-button (click)="closeDialog()">Cerrar</button>
-      </mat-card-actions>
+    </mat-card-actions>
 </mat-card>
