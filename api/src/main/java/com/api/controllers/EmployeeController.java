@@ -8,11 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.api.services.implementations.EmployeeService;
 import com.api.services.interfaces.IEmployeeService;
 import com.api.services.models.Employee;
+import com.api.services.models.ManagerDependants;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,7 +34,7 @@ public class EmployeeController {
 			@ApiResponse(responseCode = "200", description = "Obtenidos Todos los Empleados", content = {
 					@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Employee.class))) }),
 			@ApiResponse(responseCode = "201", description = "No hay empleados registrados", content = @Content)})
-	@GetMapping("/")
+	@GetMapping("")
 	public List<Employee> getAll(@RequestParam(required = false) String type, @RequestParam(required = false) String compensationGrade) {
 		return empService.getAllEmployees();
 	}
@@ -47,8 +46,7 @@ public class EmployeeController {
 			@ApiResponse(responseCode = "404", description = "No se encontró un empleado registrado con el Id dado", content = @Content)})
 	@GetMapping("/{id}")
 	public Employee getEmployeeById(@PathVariable String id) {
-		Employee res = new Employee();
-		return res;
+		return empService.getEmployeeById(id);
 	}
 	
 	@Operation(summary = "Obtener un empleado según la id de su manager")
@@ -58,9 +56,17 @@ public class EmployeeController {
 			@ApiResponse(responseCode = "404", description = "No se encontró un managerId dado", content = @Content),
 			@ApiResponse(responseCode = "201", description = "Ese manager no tiene dependientes", content = @Content)})
 	@GetMapping("/managedBy/{id}")
-	public ArrayList<Employee> getEmployeeByManager(@PathVariable String id) {
-		ArrayList<Employee> res = new ArrayList<>();
-		res.add(new Employee());
-		return res;
+	public List<Employee> getEmployeeByManager(@PathVariable String id) {
+		return empService.getEmployeesByManager(id);
+	}
+	@Operation(summary = "Obtener un empleado según la id de su manager")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Obtenido el Empleado", content = {
+					@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Employee.class))) }),
+			@ApiResponse(responseCode = "404", description = "No se encontró un managerId dado", content = @Content),
+			@ApiResponse(responseCode = "201", description = "Ese manager no tiene dependientes", content = @Content)})
+	@GetMapping("/byManager")
+	public List<ManagerDependants> getEmployeesByManager() {
+		return empService.getEmployeesByManager();
 	}
 }

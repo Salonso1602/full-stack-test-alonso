@@ -1,0 +1,19 @@
+<mat-toolbar color="primary">
+    <span>Consulting WEB</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button (click)="goToStats()">
+        <mat-icon>launch</mat-icon>
+    </button>
+</mat-toolbar>
+
+<h1>Todos los empleados</h1>
+<mat-card *ngFor="let emp of emps">
+    <mat-card-header>
+        <h2>{{emp.firstName}} {{emp.lastName}} ID:{{emp.employeeId}}</h2>
+    </mat-card-header>
+    <mat-card-actions align="end">
+        <button mat-flat-button (click)="openEmployeeDetails(emp)" class="infoButton">
+            <mat-icon>info</mat-icon>
+        </button>
+    </mat-card-actions>
+</mat-card>
