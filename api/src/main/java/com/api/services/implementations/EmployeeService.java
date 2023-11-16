@@ -1,6 +1,10 @@
 package com.api.services.implementations;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +15,7 @@ import com.api.services.helpers.IEntityMapper;
 import com.api.services.helpers.mappers.EmployeeMapper;
 import com.api.services.interfaces.IEmployeeService;
 import com.api.services.models.Employee;
+import com.api.services.models.ManagerDependants;
 
 @Service
 public class EmployeeService implements IEmployeeService {
@@ -44,12 +49,25 @@ public class EmployeeService implements IEmployeeService {
 
     @Override
     public List<Employee> getEmployeesByManager(String managerId) {
-        return mapper.mapObjects(repo.findByManager(managerId).values());
+        return mapper.mapObjects(repo.findByManager(managerId));
     }
 
     @Override
     public List<Employee> getEmployeesByMatrixManager(String matrixManagerId) {
-        return mapper.mapObjects(repo.findByMatrixManager(matrixManagerId).values());
+        return mapper.mapObjects(repo.findByMatrixManager(matrixManagerId));
+    }
+
+    @Override
+    public List<ManagerDependants> getEmployeesByManager() {
+        List<ManagerDependants> mangs = new ArrayList<>();
+
+        Iterator<EmployeeEntity> iter = repo.findAllManagers().iterator();
+
+        while (iter.hasNext()) {
+            EmployeeEntity emp = iter.next();
+            mangs.add(new ManagerDependants(mapper.mapObject(emp), mapper.mapObjects(emp.getDependants())));
+        }
+        return mangs;
     }
     
 }

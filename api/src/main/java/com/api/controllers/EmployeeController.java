@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.api.services.interfaces.IEmployeeService;
 import com.api.services.models.Employee;
+import com.api.services.models.ManagerDependants;
 
 import java.util.List;
+import java.util.Map;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -57,5 +59,15 @@ public class EmployeeController {
 	@GetMapping("/managedBy/{id}")
 	public List<Employee> getEmployeeByManager(@PathVariable String id) {
 		return empService.getEmployeesByManager(id);
+	}
+	@Operation(summary = "Obtener un empleado según la id de su manager")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Obtenido el Empleado", content = {
+					@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Employee.class))) }),
+			@ApiResponse(responseCode = "404", description = "No se encontró un managerId dado", content = @Content),
+			@ApiResponse(responseCode = "201", description = "Ese manager no tiene dependientes", content = @Content)})
+	@GetMapping("/byManager")
+	public List<ManagerDependants> getEmployeesByManager() {
+		return empService.getEmployeesByManager();
 	}
 }

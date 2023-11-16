@@ -25,9 +25,6 @@ public class ManagerImporter extends BaseEntityImporter {
                 return 1;
             }
         }
-        else{
-            System.out.println("CANT IMPORT MAN");
-        }
         if (hasNext()) {
                 return super.nextImporter.importData(valuesMap);
             } else {
@@ -45,7 +42,7 @@ public class ManagerImporter extends BaseEntityImporter {
             repo.save(employee);
         }
         catch(Exception e){
-            //continue
+            //continue  
         }
         try{
             EmployeeEntity employee = repo.findById(valuesMap.get(DataHeaders.getField(DataHeaders.DataFields.EmployeeId))).get();

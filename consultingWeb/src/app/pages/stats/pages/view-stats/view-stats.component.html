@@ -1,0 +1,10 @@
+<mat-toolbar color="primary">
+    <span>Consulting WEB</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button (click)="goToHome()">
+        <mat-icon>launch</mat-icon>
+    </button>
+</mat-toolbar>
+
+<h1>Empleados por Gerente</h1>
+<app-histogram #graph title="Distribución Empleados por Gerente" *ngIf="empsByManager"></app-histogram>

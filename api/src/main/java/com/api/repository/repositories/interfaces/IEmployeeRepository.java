@@ -1,5 +1,6 @@
 package com.api.repository.repositories.interfaces;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.jpa.repository.Query;
@@ -13,14 +14,19 @@ import com.api.repository.entities.entityImplementations.EmployeeEntity;
 public interface IEmployeeRepository extends ListCrudRepository<EmployeeEntity, String> {
 
     @Query(
-        value = "Select * FROM EMPLOYEES e WHERE e.manager_employee_id = :managerId",
+        value = "Select * FROM employees e WHERE e.manager_employee_id = :managerId",
         nativeQuery = true
     )
-    public Map<String, EmployeeEntity> findByManager(@Param("managerId")String managerId);
+    public List<EmployeeEntity> findByManager(@Param("managerId")String managerId);
 
     @Query(
-        value = "Select * FROM EMPLOYEES e WHERE e.matrix_manager_employee_id = :matrixManagerId",
+        value = "Select * FROM employees e WHERE e.matrix_manager_employee_id = :matrixManagerId",
         nativeQuery = true
     )
-    public Map<String, EmployeeEntity> findByMatrixManager(@Param("matrixManagerId")String matrixManagerId);
+    public List<EmployeeEntity> findByMatrixManager(@Param("matrixManagerId")String matrixManagerId);
+
+    @Query(
+        value = "SELECT e.* FROM employees e WHERE e.employee_id IN (SELECT DISTINCT e2.manager_employee_id FROM employees e2 WHERE e2.manager_employee_id IS NOT NULL)",
+        nativeQuery = true)
+    public List<EmployeeEntity> findAllManagers();
 }

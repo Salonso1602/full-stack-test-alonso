@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Employee } from 'src/app/core/interfaces/Employee';
 import { EmployeeService } from 'src/app/core/services/employee.service';
 import { EmployeeSummaryComponent } from 'src/app/shared/components/employee-summary/employee-summary.component';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -12,7 +13,7 @@ import { EmployeeSummaryComponent } from 'src/app/shared/components/employee-sum
 })
 export class HomePageComponent implements OnInit {
 
-  constructor(private empServ : EmployeeService, public dialog : MatDialog) { }
+  constructor(private empServ : EmployeeService, public dialog : MatDialog, private router : Router) { }
 
   emps : Employee[] = []
 
@@ -27,6 +28,10 @@ export class HomePageComponent implements OnInit {
     const dialogRef = this.dialog.open(EmployeeSummaryComponent, {
       data: {employeeId : item.employeeId},
     });
+  }
+
+  goToStats(){
+    this.router.navigate(['stats']);
   }
 
 }
