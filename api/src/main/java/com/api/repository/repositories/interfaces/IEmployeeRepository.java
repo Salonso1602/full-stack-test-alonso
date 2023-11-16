@@ -1,7 +1,6 @@
 package com.api.repository.repositories.interfaces;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListCrudRepository;
