@@ -33,7 +33,7 @@ public class EmployeeController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Obtenidos Todos los Empleados", content = {
 					@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Employee.class))) }),
-			@ApiResponse(responseCode = "201", description = "No hay empleados registrados", content = @Content)})
+			@ApiResponse(responseCode = "204", description = "No hay empleados registrados", content = @Content)})
 	@GetMapping("")
 	public List<Employee> getAll(@RequestParam(required = false) String type, @RequestParam(required = false) String compensationGrade) {
 		return empService.getAllEmployees();
@@ -54,17 +54,16 @@ public class EmployeeController {
 			@ApiResponse(responseCode = "200", description = "Obtenido el Empleado", content = {
 					@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Employee.class))) }),
 			@ApiResponse(responseCode = "404", description = "No se encontró un managerId dado", content = @Content),
-			@ApiResponse(responseCode = "201", description = "Ese manager no tiene dependientes", content = @Content)})
+			@ApiResponse(responseCode = "204", description = "Ese manager no tiene dependientes", content = @Content)})
 	@GetMapping("/managedBy/{id}")
 	public List<Employee> getEmployeeByManager(@PathVariable String id) {
 		return empService.getEmployeesByManager(id);
 	}
-	@Operation(summary = "Obtener un empleado según la id de su manager")
+	@Operation(summary = "Obtener empleados según su gerente")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Obtenido el Empleado", content = {
-					@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Employee.class))) }),
-			@ApiResponse(responseCode = "404", description = "No se encontró un managerId dado", content = @Content),
-			@ApiResponse(responseCode = "201", description = "Ese manager no tiene dependientes", content = @Content)})
+			@ApiResponse(responseCode = "200", description = "Obtenido los Empleados y sus gerentes", content = {
+					@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ManagerDependants.class))) }),
+			@ApiResponse(responseCode = "204", description = "No hay gerentes asignados", content = @Content)})
 	@GetMapping("/byManager")
 	public List<ManagerDependants> getEmployeesByManager() {
 		return empService.getEmployeesByManager();

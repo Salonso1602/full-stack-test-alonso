@@ -16,10 +16,10 @@ Para todos estos componentes se toma una postura al desarrollo enfocada a contru
 
 1. Clonar repositorio
 2. En la carpeta que se clonó ejecutar el comando:  
-    - ```$  docker compose up --build```  
+    - ```$ docker compose up --build -d ```  
 3. Esperar un momento a que se levanten los contenedores (puede tomar algunos minutos entre que se construye todo y se conectan back y bd)  
 4. Los componentes se pueden acceder localmente:  
-    - ConsultingWEB: [http://localhost:80]()
+    - ConsultingWEB: [http://localhost:80](http://localhost:80)
     - ConsultingAPI: [Swagger Docs](http://localhost:8080)  
     - BD: [http://localhost:3306]() Credenciales: user: admin, password:admin  
 

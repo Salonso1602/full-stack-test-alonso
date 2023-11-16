@@ -26,7 +26,7 @@ public class DataImportController {
 
 	@Operation(summary = "Cargar data de archivo")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Importado los datos", content = {
+			@ApiResponse(responseCode = "200", description = "Cantidad de datos importados", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = Integer.class)) })
 				})
 	@PostMapping("/importLocal")
@@ -36,7 +36,7 @@ public class DataImportController {
 
 	@Operation(summary = "Cargar data de archivo")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Importado los datos en el path dado", content = {
+			@ApiResponse(responseCode = "200", description = "Cantidad de datos importados en el path dado", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = Integer.class)) }),
 			@ApiResponse(responseCode = "404", description = "No hay archivo en la ruta dada", content = @Content)
 				})

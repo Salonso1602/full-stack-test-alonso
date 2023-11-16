@@ -2,7 +2,7 @@ FROM gradle:8.4.0-jdk17-alpine
 VOLUME /tmp
 COPY ./src ./src
 COPY ./data ./data
-COPY ./build ./build
+#COPY ./build ./build
 COPY ./gradle ./gradle
 
 COPY build.gradle .
