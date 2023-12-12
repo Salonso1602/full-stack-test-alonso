@@ -1,6 +1,7 @@
 # Prueba Técnica por Santiago Alonso
 
-El presente código representa una prueba técnica, cuyo objetivos son demostrar las capacidades en diferentes áreas y perfiles.  
+El presente código representa una prueba técnica, cuyo objetivos son demostrar las capacidades en diferentes áreas y perfiles. El ejercicio consistió en la realización de un sistema en 3 niveles full-stack (Angular, Java Spring Boot y SQL) en tan solo 10 días. 
+Decidí dar un enfoque especial al area BackEnd ya que es mi area de preferencia y el reto de probar un framework que nunca había usado. Probó una prueba interesante con retos desafiantes y satisfactorios, que me dió muchos conocimientos sobre el framework y sobre como abordar nuevas tecnologías en el futuro.
 Se presenta:  
 - Una API con Java Spring Boot: **ConsultingAPI**  
 - Pagina Web en Angular que consume la API: **ConsultingWEB**  
